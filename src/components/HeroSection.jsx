@@ -6,13 +6,33 @@ import { AnimatePresence, motion } from "framer-motion";
 import { awards } from "@/constants/awards";
 import { useEffect, useState } from "react";
 import MenuItem from "./MenuItem";
-
-
+import SlideUpFadeText from "./SlideUpFadeText";
 
 export default function HeroSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+
+  const words = {
+    hidden: { opacity: 1 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const word = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+      },
+    },
+  };
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % awards.length);
@@ -39,11 +59,17 @@ export default function HeroSection() {
         </div>
       </header>
 
-      <main className=" mx-auto px-20 mt-20 pt-20">
-        <div className="max-w-7xl mx-auto">
-          <h1 className="text-[118px] font-medium tracking-tight mb-20 leading-none text-black">
-            Crafting{" "}
+      <main className=" mx-auto px-20 mt-5 pt-20">
+        <div className="max-w-7xl">
+          <motion.div
+            variants={words}
+            initial="hidden"
+            animate="visible"
+            className="text-[119px] p-0 font-bold text-black  flex flex-wrap gap-4 "
+          >
+            <motion.span variants={word}>Crafting</motion.span>
             <motion.span
+              variants={word}
               animate={{
                 color: ["#363B97", "#4045B8", "#23.52551"],
               }}
@@ -55,17 +81,19 @@ export default function HeroSection() {
             >
               Digital
             </motion.span>
-            <br />
-            <span className="mt-7">Experiences</span>
-          </h1>
-          {/* <button
-            className="mt-4 bg-green-300 text-black hover:bg-primary/90 relative overflow-hidden px-10 py-6 rounded-lg"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-    
+         
+          </motion.div>
+
+          <motion.div
+          
+            variants={word}
+            initial="hidden"
+            animate="visible"
+            className="text-[119px] p-0 font-bold text-black mt-[-40px] flex gap-4"
           >
-            <SlideUpFadeText isHovered={isHovered} text="Get in touch" />
-          </button> */}
+            <motion.span variants={word}>Experiences</motion.span>
+          </motion.div>
+  
           <div className="grid grid-cols-12 mt-20">
             <div className="flex items-center gap-4 col-span-6">
               <div className="bg-black text-white p-0 rounded-full h-20 w-20 flex items-center justify-center font-medium relative overflow-hidden">
@@ -98,14 +126,20 @@ export default function HeroSection() {
               </div>
             </div>
 
+            
+
             <div className="flex items-center justify-between gap-8 col-span-6">
               <p className="text-[23.5px] text-gray-900 max-w-2xl">
                 We build engaging websites, brands & innovative e-commerce
                 solutions.
               </p>
               <div className="w-3/4">
-                <button className="rounded-full text-[23.5px] bg-blue-600 hover:bg-blue-600/90 text-lg w-full px-8 py-5 text-white">
-                  Case Studies
+                <button 
+                  className="rounded-full text-[25px] bg-blue-600 hover:bg-blue-600/90 text-lg w-full px-8 py-5 text-white"
+                  onMouseEnter={() => setIsHovered(true)}
+                  onMouseLeave={() => setIsHovered(false)}
+                >
+                 <SlideUpFadeText text="Case Studies" isHovered={isHovered} className="text-[25px]"/>
                 </button>
               </div>
             </div>
@@ -121,5 +155,3 @@ export default function HeroSection() {
     </div>
   );
 }
-
-

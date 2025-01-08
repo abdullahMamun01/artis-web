@@ -9,7 +9,11 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'randomuser.me',
-      }
+      },
+      {
+        protocol: 'https',
+        hostname: 'd3aj5vjnhssdu4.cloudfront.net',
+      },
     ],
   },
 

@@ -2,18 +2,52 @@
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
-
+import { motion } from "framer-motion";
 export default function TeamSection() {
+  const welcomeText = "Our team of experts can help you with...";
+  const container = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.08,
+      },
+    },
+  };
+  const child = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        damping: 32,
+        stiffness: 100,
+      },
+    },
+  };
   const [hoveredService, setHoveredService] = useState(null);
   return (
     <div className="min-h-screen bg-[#111111] px-6 py-20 ">
       <div className="mx-auto w-full px-12">
-        <h2 className="mb-4 text-xl text-gray-200">
-          Our team of experts can help you with...
-        </h2>
+        <h2 className="mb-4 text-xl text-gray-200"></h2>
 
-        <div className="space-y-4">
-          {/* Service headings with hover effect */}
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={container}
+          className="space-y-4"
+        >
+          {welcomeText.split(" ").map((word, wordIndex) => (
+            <motion.span
+              key={wordIndex}
+              variants={child}
+              className="inline-block mr-2 text-[24px]  text-white"
+            >
+              {word}
+            </motion.span>
+          ))}
+
           {[
             "E-commerce",
             "Website Design",
@@ -26,9 +60,9 @@ export default function TeamSection() {
               onMouseEnter={() => setHoveredService(service)}
               onMouseLeave={() => setHoveredService(null)}
             >
-              <h1 className="text-[54px] font-medium text-white transition-transform duration-500 ease-out hover:translate-x-2 ">
+              <motion.h1 variants={child} className="text-[54px] font-medium text-white transition-transform duration-500 ease-out hover:translate-x-2 ">
                 {service}
-              </h1>
+              </motion.h1>
               <div
                 className={`absolute right-0 top-1/2 flex items-center gap-4 -translate-y-1/2 transition-all duration-300 ${
                   hoveredService === service
@@ -47,16 +81,18 @@ export default function TeamSection() {
                     alt="Alveena Casa"
                     width={1000}
                     height={1000}
-                    
                     className="object-cover"
                   />
                 </div>
 
-                <ArrowRight  className="h-10 w-10 text-white"/>
+                <ArrowRight className="h-10 w-10 text-white" />
               </div>
             </div>
           ))}
-        </div>
+        </motion.div>
+
+        {/* ebd */}
+
         <div className="w-full border-b h- border-gray-700 py-10"></div>
 
         <div className="mt-24">
