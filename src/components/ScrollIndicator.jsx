@@ -12,7 +12,6 @@ export function ScrollIndicator({ sectionRef }) {
     damping: 50,
     restDelta: 0.001,
   });
-  console.log(scrollYProgress)
   return (
     <motion.div className="sticky right-8 top-1/2 -translate-y-1/4 w-[7px] h-[100px] bg-gray-800/50 rounded-full overflow-hidden ml-[-100px]">
       <motion.div

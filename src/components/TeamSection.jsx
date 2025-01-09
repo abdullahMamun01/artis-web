@@ -2,7 +2,8 @@
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
+
 export default function TeamSection() {
   const welcomeText = "Our team of experts can help you with...";
   const container = {
@@ -27,14 +28,18 @@ export default function TeamSection() {
     },
   };
   const [hoveredService, setHoveredService] = useState(null);
+  const ref = React.useRef(null);
+  const isInView = useInView(ref, { once: true });
+
   return (
     <div className="min-h-screen bg-[#111111] px-6 py-20 ">
       <div className="mx-auto w-full px-12">
         <h2 className="mb-4 text-xl text-gray-200"></h2>
 
         <motion.div
+          ref={ref}
           initial="hidden"
-          animate="visible"
+          animate={isInView ? "visible" : "hidden"}
           variants={container}
           className="space-y-4"
         >

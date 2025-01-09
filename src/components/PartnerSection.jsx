@@ -3,11 +3,46 @@ import React from "react";
 import { motion, useInView } from "framer-motion";
 
 export default function PartnerSection() {
-  const ref = React.useRef(null);
-  const isInView = useInView(ref, { once: true });
+  const textRef = React.useRef(null);
+  const statsRef = React.useRef(null);
+  const isTextInView = useInView(textRef, { once: true });
+  const isStatsInView = useInView(statsRef, { once: true });
+
+  const barVariants = {
+    hidden: { 
+      scaleY: 0,
+      opacity: 0 
+    },
+    visible: {
+      scaleY: 1,
+      opacity: 1,
+      transition: {
+        duration: 0.8,
+        ease: [0.33, 1, 0.68, 1],
+        delayChildren: 0.6
+      }
+    }
+  };
+
+  const wBarVariants = {
+    hidden: { 
+      scaleY: 0,
+      opacity: 0,
+      originY: 1 
+    },
+    visible: (custom) => ({
+      scaleY: 1,
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        delay: custom * 0.2,
+        ease: [0.33, 1, 0.68, 1]
+      }
+    })
+  };
 
   return (
-    <div className="min-h-screen bg-white  py-32 ">
+    <div className="min-h-screen bg-white py-32">
       <div className="mx-auto w-full px-20 h-4/5">
         <div className="grid gap-8 lg:grid-cols-12">
           {/* Left Column */}
@@ -35,10 +70,10 @@ export default function PartnerSection() {
                 ))}
               </motion.h1>
               <motion.p 
-                ref={ref}
+                ref={textRef}
                 className="max-w-xl font-medium text-[24px] text-[#111111] "
                 initial={{ opacity: 0 }}
-                animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+                animate={isTextInView ? { opacity: 1 } : { opacity: 0 }}
                 transition={{ duration: 0.8 }}
               >
                 {["We partner with companies of all sizes to solve complex business challenges",
@@ -47,7 +82,7 @@ export default function PartnerSection() {
                   <motion.span
                     key={i}
                     initial={{ opacity: 0, y: 10 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+                    animate={isTextInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
                     transition={{
                       duration: 0.8,
                       ease: "easeOut",
@@ -122,39 +157,48 @@ export default function PartnerSection() {
           {/* Right Column - Stats */}
           <div className="flex items-end col-span-6 h-full justify-end">
             <motion.div 
-              className="w-full rounded-3xl bg-[#ECF1F4] px-[80px] py-20 border-l border-r border-gray-350 origin-top"
-              initial={{ opacity: 0, scaleY: 0 }}
-              animate={{ opacity: 1, scaleY: 1 }}
-              transition={{
-                duration: 0.8,
-                type: "spring",
-                damping: 25,
-                stiffness: 100,
-              }}
+              ref={statsRef}
+              className="w-full rounded-3xl bg-[#ECF1F4] px-[80px] py-20 border-l border-r border-gray-350"
+              variants={barVariants}
+              initial="hidden"
+              animate={isStatsInView ? "visible" : "hidden"}
             >
               <div className="grid sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-gray-300">
-                <motion.div 
-                  className="text-center pb-8 sm:pb-0 sm:pr-8"
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6, duration: 0.5 }}
-                >
-                  <div className="text-[54px] font-bold mb-2">20</div>
+                <div className="text-center pb-8 sm:pb-0 sm:pr-8">
+                  <div className="text-[54px] font-bold mb-2 flex justify-center gap-2">
+                    {/* W pattern bars */}
+                    <motion.div
+                      variants={wBarVariants}
+                      custom={0}
+                      className="w-1 h-12 bg-black transform rotate-[-20deg] origin-bottom"
+                    />
+                    <motion.div
+                      variants={wBarVariants}
+                      custom={1}
+                      className="w-1 h-12 bg-black transform rotate-[20deg] origin-bottom"
+                    />
+                    <motion.div
+                      variants={wBarVariants}
+                      custom={2}
+                      className="w-1 h-12 bg-black transform rotate-[-20deg] origin-bottom"
+                    />
+                    <motion.div
+                      variants={wBarVariants}
+                      custom={3}
+                      className="w-1 h-12 bg-black transform rotate-[20deg] origin-bottom"
+                    />
+                    <span>20</span>
+                  </div>
                   <div className="text-[24px] text-muted-foreground">
                     Years on the market
                   </div>
-                </motion.div>
-                <motion.div 
-                  className="text-center pt-8 sm:pt-0 sm:pl-8"
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.8, duration: 0.5 }}
-                >
+                </div>
+                <div className="text-center pt-8 sm:pt-0 sm:pl-8">
                   <div className="text-[54px] font-bold mb-2">500</div>
                   <div className="text-[24px] text-muted-foreground">
                     Satisfied Customers
                   </div>
-                </motion.div>
+                </div>
               </div>
             </motion.div>
           </div>

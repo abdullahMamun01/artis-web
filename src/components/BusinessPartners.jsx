@@ -11,7 +11,7 @@ import Logo6 from "../../public/logo-7.png";
 
 
 
-import {motion} from 'framer-motion'
+import {motion, useInView} from 'framer-motion'
 const logos = [
   {
     name: "Jaeger-LeCoultre",
@@ -61,15 +61,20 @@ export default function BusinessPartners() {
   const text = "From ambitious startups to global companies, we partner with great businesses and industry leaders.";
   const words = text.split(" ");
   
+  const ref = React.useRef(null);
+  const isInView = useInView(ref, { once: true });
+  
   return (
-    <div className="space-y-8 px-20">
-      <motion.h2 className="text-[54px] font-semibold max-w-7xl px-4 flex flex-wrap gap-x-4">
+    <div className="space-y-8 px-20" ref={ref}>
+      <motion.h2 
+        className="text-[54px] font-semibold max-w-7xl px-4 flex flex-wrap gap-x-4"
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+      >
         {words.map((word, i) => (
           <motion.span
             key={i}
             variants={textVariants}
-            initial="hidden"
-            animate="visible"
             transition={{
               duration: 0.5,
               delay: i * 0.1,
@@ -86,7 +91,7 @@ export default function BusinessPartners() {
           className="grid grid-cols-2 md:grid-cols-5 gap-12 items-center justify-items-center"
           variants={containerVariants}
           initial="hidden"
-          animate="visible"
+          animate={isInView ? "visible" : "hidden"}
         >
           {logos.map((logo, index) => (
             <motion.div
@@ -122,18 +127,3 @@ export default function BusinessPartners() {
 }
 
 
-/* 
-
-     animate={{ 
-                opacity: [0, 1, 1, 0],
-                y: [20, 0, 0, -20]
-              }}
-              transition={{
-                duration: 4,
-                times: [0, 0.1, 0.9, 1],
-                repeat: Infinity,
-                repeatDelay: 1,
-                delay: index * 0.2+0.5,
-              }}
-
-*/

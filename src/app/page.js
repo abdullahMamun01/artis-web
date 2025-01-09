@@ -1,5 +1,6 @@
 import Banner from "@/components/Banner";
 import BusinessPartners from "@/components/BusinessPartners";
+import DigitalExperiance from "@/components/DigitalExperiance";
 import DigitalGoalsSection from "@/components/DigitalGoalsSection";
 import Feedback from "@/components/Feedback";
 import Footer from "@/components/Footer";
@@ -33,6 +34,7 @@ export default async function Home() {
         <Banner />
         <BusinessPartners />
         <DigitalGoalsSection />
+        <DigitalExperiance/>
         <ServicesSection />
         <Suspense fallback={<div>Loading...</div>}>
           <Feedback feedbacks={feedbacks} />

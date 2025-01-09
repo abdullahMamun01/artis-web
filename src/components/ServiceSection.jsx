@@ -1,20 +1,24 @@
-'use client'
+"use client";
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import SlideUpFadeText from "./SlideUpFadeText";
 
 const ServicesSection = () => {
   const [isHovered, setIsHovered] = useState(false);
+  const ref = React.useRef(null);
+  const isInView = useInView(ref, { once: true });
+  const leftSectionRef = React.useRef(null);
+  const isLeftSectionInView = useInView(leftSectionRef, { once: true });
   return (
     <div className="grid grid-cols-12 md:flex-row items-start justify-between px-6 md:px-12 lg:px-24 py-20 bg-white">
       {/* Left Section */}
-      <div className="mb-8 md:mb-0 col-span-5">
+      <div className="mb-8 md:mb-0 col-span-5" ref={leftSectionRef}>
         <h2 className="text-[54px] font-bold mb-4 flex flex-wrap gap-x-4">
           {["We're", "good", "at"].map((word, index) => (
             <motion.span
               key={index}
               initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
+              animate={{ y: 0, opacity: isLeftSectionInView ? 1 : 0 }}
               transition={{ duration: 0.5, delay: index * 0.2 }}
             >
               {word}
@@ -23,7 +27,7 @@ const ServicesSection = () => {
         </h2>
         <motion.h6
           initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
+          animate={{ y: 0, opacity: isLeftSectionInView ? 1 : 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
           className="text-[16px] text-gray-600 font-md mb-4"
         >
@@ -41,7 +45,7 @@ const ServicesSection = () => {
             <motion.li
               key={index}
               initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
+              animate={{ y: 0, opacity: isLeftSectionInView ? 1 : 0 }}
               transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
               className="font-semibold text-gray-800 text-[31px]"
             >
@@ -52,27 +56,24 @@ const ServicesSection = () => {
       </div>
 
       {/* Right Section */}
-      <motion.div 
+      <motion.div
+        ref={ref}
         className="mt-auto col-span-7 bg-[#545CFF] text-white p-6 md:p-12 rounded-[30px] origin-top overflow-hidden"
         initial={{ scaleY: 0 }}
-        animate={{ scaleY: 1 }}
+        animate={{ scaleY: isInView ? 1 : 0 }}
         transition={{ duration: 0.7 }}
       >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
           transition={{ duration: 0.4, delay: 0.6 }}
         >
-          <motion.p 
-            className="text-[40px] font-semibold mb-6"
-          >
+          <motion.p className="text-[40px] font-semibold mb-6">
             Let's start with a conversation about how we can help you! Get in
             touch, we're a nice bunch.
           </motion.p>
-          <motion.div 
-            className="flex items-center space-x-4"
-          >
-            <button 
+          <motion.div className="flex items-center space-x-4">
+            <button
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
               className="bg-white text-gray-800 font-lg py-4 text-[24px] rounded-full px-12 shadow-lg hover:bg-gray-100"

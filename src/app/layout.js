@@ -2,6 +2,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import LoadingOverlay from "@/components/LoadingOverlay";
 import { Toaster } from 'react-hot-toast'
+import Loader from "@/components/Laoder";
+import { LoadingProvider } from "@/components/LoadingProvider";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -23,9 +25,13 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <LoadingOverlay/>
-        {children}
-        <Toaster position="top-right" />
+        {/* <Loader/> */}
+        <LoadingProvider>
+
+          <LoadingOverlay />
+          {children}
+          <Toaster position="top-right" />
+        </LoadingProvider>
       </body>
     </html>
   );
