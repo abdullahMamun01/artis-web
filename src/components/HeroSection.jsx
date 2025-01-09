@@ -105,7 +105,7 @@ export default function HeroSection({ heroContent }) {
             variants={container}
             initial="hidden"
             animate="visible"
-            className="text-[119px] p-0 font-bold text-black flex flex-wrap gap-4"
+            className="text-[119px] p-0 font-bold text-black flex flex-wrap gap-8"
           >
             {heroTitle.split(" ").map((word, index) => {
               if (index === 1) {
@@ -114,21 +114,29 @@ export default function HeroSection({ heroContent }) {
                     key={index}
                     variants={wordAnimation}
                     animate={{
-                      color: ["#363B97", "#4045B8", "#23.52551"],
+                      color: [
+                        "#363B97", // Deep blue
+                        "#4045B8", // Medium blue
+                        "#4A57E2", // Bright blue
+                        "#6366F1", // Indigo
+                        "#4A57E2", // Back to bright blue
+                        "#4045B8", // Back to medium blue
+                        "#363B97"  // Back to deep blue
+                      ],
                     }}
                     transition={{
-                      duration: 4,
+                      duration: 6, // Increased duration for smoother transition
                       repeat: Infinity,
                       ease: "linear",
                     }}
-           
+                    className=""
                   >
                     {word}
                   </motion.span>
                 );
               } else {
                 return (
-                  <motion.span key={index} variants={wordAnimation}>
+                  <motion.span className="m-0 p-0" key={index} variants={wordAnimation}>
                     {word}
                   </motion.span>
                 );
