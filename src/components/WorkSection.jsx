@@ -15,7 +15,7 @@ export function WorkSection({works}) {
     smooth: true, // Enable smooth scrolling
   });
 
-  const x = useTransform(scrollYProgress, [0.1, 0.9], ["0%", "-53%"]);
+  const x = useTransform(scrollYProgress, [0.1, 0.9], ["0%", "-67%"]);
   const sommothScroll = useSpring(x, { stiffness: 100, damping: 30 });
   return (
     <section ref={containerRef} className="relative h-[300vh] py-10">
