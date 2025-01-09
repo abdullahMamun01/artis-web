@@ -3,17 +3,37 @@
 import { Menu } from "lucide-react";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { awards } from "@/constants/awards";
+// import { awards } from "@/constants/awards";
 import { useEffect, useState } from "react";
 import MenuItem from "./MenuItem";
 import SlideUpFadeText from "./SlideUpFadeText";
 
-export default function HeroSection() {
+export default function HeroSection({ heroContent }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [getInTouchHovered, setGetInTouchHovered] = useState(false);
-
+  const awards = heroContent?.stats?.map((award) => ({
+    number: award.count,
+    title: award.label,
+  })) || [
+    {
+      number: "20",
+      title: "Website Awards",
+    },
+    {
+      number: "15",
+      title: "Design Awards",
+    },
+    {
+      number: "25",
+      title: "Happy Clients",
+    },
+    {
+      number: "10",
+      title: "Industry Awards",
+    },
+  ];
   const container = {
     hidden: { opacity: 1 },
     visible: {
@@ -49,6 +69,8 @@ export default function HeroSection() {
 
     return () => clearInterval(timer);
   }, []);
+
+  const heroTitle = heroContent.title || "Digital Experiences for Your Success";
   return (
     <div className="min-h-screen bg-white">
       <header className=" mx-auto px-20 py-6 flex items-center justify-between">
@@ -85,30 +107,35 @@ export default function HeroSection() {
             animate="visible"
             className="text-[119px] p-0 font-bold text-black flex flex-wrap gap-4"
           >
-            <motion.span variants={wordAnimation}>Crafting</motion.span>
-            <motion.span
-              variants={wordAnimation}
-              animate={{
-                color: ["#363B97", "#4045B8", "#23.52551"],
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: "linear",
-              }}
-            >
-              Digital
-            </motion.span>
+            {heroTitle.split(" ").map((word, index) => {
+              if (index === 1) {
+                return (
+                  <motion.span
+                    key={index}
+                    variants={wordAnimation}
+                    animate={{
+                      color: ["#363B97", "#4045B8", "#23.52551"],
+                    }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
+           
+                  >
+                    {word}
+                  </motion.span>
+                );
+              } else {
+                return (
+                  <motion.span key={index} variants={wordAnimation}>
+                    {word}
+                  </motion.span>
+                );
+              }
+            })}
           </motion.div>
 
-          <motion.div
-            variants={container}
-            initial="hidden"
-            animate="visible"
-            className="text-[119px] p-0 font-bold text-black mt-[-40px] flex gap-4"
-          >
-            <motion.span variants={wordAnimation}>Experiences</motion.span>
-          </motion.div>
 
           <div className="grid grid-cols-12 mt-20">
             <div className="flex items-center gap-4 col-span-6">
@@ -144,8 +171,7 @@ export default function HeroSection() {
 
             <div className="flex items-center justify-between gap-8 col-span-6">
               <p className="text-[23.5px] text-gray-900 max-w-2xl">
-                We build engaging websites, brands & innovative e-commerce
-                solutions.
+                {heroContent.subtitle}
               </p>
               <div className="w-3/4">
                 <button

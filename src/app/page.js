@@ -11,6 +11,7 @@ import SmoothScroll from "@/components/SmoothScroll";
 import TeamSection from "@/components/TeamSection";
 import { WorkSection } from "@/components/WorkSection";
 import fetchFeedback from "@/services/feedback.service";
+import fetchHeroData from "@/services/fetchHeeroContent";
 import fetchWorks from "@/services/work.service";
 
 
@@ -21,11 +22,14 @@ import { Suspense } from "react";
 export default async function Home() {
   const works = await fetchWorks();
   const feedbacks = await fetchFeedback();
-
+  const heroContent = await fetchHeroData();
   return (
     <div>
       <SmoothScroll>
-        <HeroSection />
+        <Suspense fallback={<div>Loading...</div>}>
+
+          <HeroSection heroContent={heroContent} />
+        </Suspense>
         <Suspense fallback={<div>Loading...</div>}>
           <WorkSection works={works} />
         </Suspense>
@@ -34,7 +38,7 @@ export default async function Home() {
         <Banner />
         <BusinessPartners />
         <DigitalGoalsSection />
-        <DigitalExperiance/>
+        <DigitalExperiance />
         <ServicesSection />
         <Suspense fallback={<div>Loading...</div>}>
           <Feedback feedbacks={feedbacks} />

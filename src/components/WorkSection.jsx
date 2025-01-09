@@ -27,7 +27,7 @@ export function WorkSection({works}) {
         >
           <WorkIntro />
           {works.map((work, index) => (
-            <WorkCard key={work.title} {...work} index={index} />
+            <WorkCard key={work.title} isBtn={index === 0} {...work} index={index} />
           ))}
           <div className="flex flex-col px-0 items-center justify-center w-[650px] overflow-hidden rounded-3xl bg-white">
             <h1 className="text-[54px] leading-none mb-7 font-bold">View More</h1>
