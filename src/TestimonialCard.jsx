@@ -22,7 +22,7 @@ export function TestimonialCard({ quote, author, company, image, index }) {
         className="bg-[#1A1A2E]/50 rounded-[30px] px-14 py-20 backdrop-blur-sm mb-8 border border-gray-700"
       >
         {/* Fixed width content container */}
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-3xl mx-auto">
           <div className="relative">
             <motion.div
               initial={{ scale: 0 }}
@@ -32,7 +32,7 @@ export function TestimonialCard({ quote, author, company, image, index }) {
             >
               "
             </motion.div>
-            <p className="text-white text-[31px] leading-relaxed mb-12 pt-14">
+            <p className="text-white text-[30px] font-bold leading-relaxed mb-12 pt-14">
              {quote}
             </p>
             <div className="flex items-center gap-4">
@@ -50,7 +50,7 @@ export function TestimonialCard({ quote, author, company, image, index }) {
                 className="w-12 h-12 rounded-full object-cover border-2 border-blue-500/20"
               />
               <div>
-                <h4 className="text-white font-medium">{author}</h4>
+                <h4 className="text-gray-400 font-thin text-[23px]">{author}</h4>
                 <p className="text-gray-400">{company}</p>
               </div>
             </div>

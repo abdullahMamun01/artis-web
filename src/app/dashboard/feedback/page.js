@@ -8,6 +8,7 @@ import FeedbackModal from '@/components/modal/FeedbackModal'
 import { useEffect } from 'react';
 import { useFeedbackStore } from '@/stores/feedback.stores'
 import { useModalStore } from '@/stores/modal.store'
+import TableSkeleton from '@/components/skeleton/TableSkeleton'
 
 
 
@@ -73,14 +74,7 @@ export default function FeedbackPage() {
                 </button>
             </div>
             {isLoading ? (
-                <div className="animate-pulse">
-                    <div className="h-6 bg-gray-200 rounded-md"></div>
-                    <div className="mt-4 grid grid-cols-1 gap-4">
-                        {[1, 2, 3, 4, 5].map((i) => (
-                            <div key={i} className="h-16 bg-gray-200 rounded-md"></div>
-                        ))}
-                    </div>
-                </div>
+                <TableSkeleton/>
             )
                 :
                 <FeedbackTable feedbackItems={feedbackItems} onDelete={deleteFeedbackItem} />

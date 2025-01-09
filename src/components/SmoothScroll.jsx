@@ -1,59 +1,38 @@
 'use client'
-import React, { useRef, useState, useCallback, useLayoutEffect } from "react"
-import ResizeObserver from "resize-observer-polyfill"
-import {
-  useTransform,
-  useSpring,
-  motion,
-  AnimatePresence
-} from "framer-motion"
+import { useEffect } from 'react';
 
-const SmoothScroll = ({ children }) => {
-  const scrollRef = useRef(null)
-  const [pageHeight, setPageHeight] = useState(0)
+const SmoothScroll = ({children}) => {
+  useEffect(() => {
+    // Get all links that start with #
+    const smoothScrollLinks = document.querySelectorAll('a[href^="#"]');
+    
+    const handleClick = (e) => {
+      e.preventDefault();
+      const href = e.currentTarget.getAttribute('href');
+      const targetElement = document.querySelector(href);
+      
+      if (targetElement) {
+        targetElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    };
 
-  const resizePageHeight = useCallback(entries => {
-    for (let entry of entries) {
-      setPageHeight(entry.contentRect.height)
-    }
-  }, [])
+    // Add click event listeners to all smooth scroll links
+    smoothScrollLinks.forEach(link => {
+      link.addEventListener('click', handleClick);
+    });
 
-  useLayoutEffect(() => {
-    const resizeObserver = new ResizeObserver(entries =>
-      resizePageHeight(entries)
-    )
-    scrollRef && resizeObserver.observe(scrollRef.current)
-    return () => resizeObserver.disconnect()
-  }, [scrollRef, resizePageHeight])
+    // Cleanup event listeners
+    return () => {
+      smoothScrollLinks.forEach(link => {
+        link.removeEventListener('click', handleClick);
+      });
+    };
+  }, []);
 
-  const scrollY = useSpring(0, {
-    damping: 20,
-    mass: 0.27,
-    stiffness: 100,
-    overshootClamping: true
-  })
-  const transform = useTransform(scrollY, [0, pageHeight], [0, -pageHeight])
+  return children; // Return children instead of null
+};
 
-  return (
-    <div ref={scrollRef}>
-      <AnimatePresence>
-        <motion.div
-          key={transform}
-          style={{ y: transform }}
-          className="will-change-transform"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
-        >
-          {children}
-        </motion.div>
-      </AnimatePresence>
-      <div style={{ height: pageHeight }} />
-    </div>
-  )
-}
-
-export default SmoothScroll
-
-
+export default SmoothScroll;

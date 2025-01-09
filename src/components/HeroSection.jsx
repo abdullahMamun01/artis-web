@@ -12,27 +12,36 @@ export default function HeroSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [getInTouchHovered, setGetInTouchHovered] = useState(false);
 
-  const words = {
+  const container = {
     hidden: { opacity: 1 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
+        staggerChildren: 0.15,
+        delayChildren: 0.2,
       },
     },
   };
 
-  const word = {
-    hidden: { opacity: 0, y: 50 },
+  const wordAnimation = {
+    hidden: {
+      y: 50,
+      opacity: 0,
+    },
     visible: {
-      opacity: 1,
       y: 0,
+      opacity: 1,
       transition: {
-        duration: 0.5,
+        type: "spring",
+        damping: 12,
+        stiffness: 100,
+        bounce: 0.3,
       },
     },
   };
+
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % awards.length);
@@ -46,9 +55,18 @@ export default function HeroSection() {
         <a href="/" className="text-2xl font-bold text-black">
           AW
         </a>
+
         <div className="flex items-center gap-4">
-          <button className="rounded-full border-2 border-gray-300 px-4 py-2 text-gray-600 hover:text-gray-900 hover:border-gray-900">
-            Get in touch
+          <button
+            onMouseEnter={() => setGetInTouchHovered(true)}
+            onMouseLeave={() => setGetInTouchHovered(false)}
+            className="rounded-full border border-[#4a57e2] px-[26px] py-1.5 text-gray-800 hover:text-gray-900 hover:border-gray-900"
+          >
+            <SlideUpFadeText
+              text="Get in touch"
+              isHovered={getInTouchHovered}
+              className="text-[16px] font-medium"
+            />
           </button>
           <button
             className="p-2 text-gray-600 hover:text-gray-900"
@@ -62,14 +80,14 @@ export default function HeroSection() {
       <main className=" mx-auto px-20 mt-5 pt-20">
         <div className="max-w-7xl">
           <motion.div
-            variants={words}
+            variants={container}
             initial="hidden"
             animate="visible"
-            className="text-[119px] p-0 font-bold text-black  flex flex-wrap gap-4 "
+            className="text-[119px] p-0 font-bold text-black flex flex-wrap gap-4"
           >
-            <motion.span variants={word}>Crafting</motion.span>
+            <motion.span variants={wordAnimation}>Crafting</motion.span>
             <motion.span
-              variants={word}
+              variants={wordAnimation}
               animate={{
                 color: ["#363B97", "#4045B8", "#23.52551"],
               }}
@@ -81,19 +99,17 @@ export default function HeroSection() {
             >
               Digital
             </motion.span>
-         
           </motion.div>
 
           <motion.div
-          
-            variants={word}
+            variants={container}
             initial="hidden"
             animate="visible"
             className="text-[119px] p-0 font-bold text-black mt-[-40px] flex gap-4"
           >
-            <motion.span variants={word}>Experiences</motion.span>
+            <motion.span variants={wordAnimation}>Experiences</motion.span>
           </motion.div>
-  
+
           <div className="grid grid-cols-12 mt-20">
             <div className="flex items-center gap-4 col-span-6">
               <div className="bg-black text-white p-0 rounded-full h-20 w-20 flex items-center justify-center font-medium relative overflow-hidden">
@@ -126,20 +142,22 @@ export default function HeroSection() {
               </div>
             </div>
 
-            
-
             <div className="flex items-center justify-between gap-8 col-span-6">
               <p className="text-[23.5px] text-gray-900 max-w-2xl">
                 We build engaging websites, brands & innovative e-commerce
                 solutions.
               </p>
               <div className="w-3/4">
-                <button 
+                <button
                   className="rounded-full text-[25px] bg-blue-600 hover:bg-blue-600/90 text-lg w-full px-8 py-5 text-white"
                   onMouseEnter={() => setIsHovered(true)}
                   onMouseLeave={() => setIsHovered(false)}
                 >
-                 <SlideUpFadeText text="Case Studies" isHovered={isHovered} className="text-[25px]"/>
+                  <SlideUpFadeText
+                    text="Case Studies"
+                    isHovered={isHovered}
+                    className="text-[25px]"
+                  />
                 </button>
               </div>
             </div>

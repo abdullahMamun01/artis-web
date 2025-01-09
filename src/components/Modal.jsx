@@ -42,7 +42,7 @@ export function Modal({ isOpen, onClose, children }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -100 }}
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            className="fixed left-1/4 top-10  w-3/5 h-[650px] bg-black rounded-3xl z-50 p-10 overflow-y-hidden scrollbar-hide"
+            className="fixed left-1/4 top-10   w-3/5 h-[650px] bg-black rounded-3xl z-50 p-10 overflow-y-hidden scrollbar-hide"
           >
             {children}
           </motion.div>

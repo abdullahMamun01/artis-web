@@ -2,15 +2,9 @@
 import { TestimonialCard } from "@/TestimonialCard";
 import React, { useRef } from "react";
 import { ScrollIndicator } from "./ScrollIndicator";
-import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function Feedback({feedbacks}) {
     const containerRef = useRef(null);
-    const { scrollYProgress } = useScroll({
-        target: containerRef,
-        offset: ["start end", "end start"]
-    });
-
   return (
     <div className=" bg-gradient-to-l from-[#111111] to-[#111111] py-20 relative over">
       {/* Keep scrolling indicator */}
@@ -33,28 +27,19 @@ export default function Feedback({feedbacks}) {
           </div>
         </div>
 
-        {/* Testimonial cards */}
-        <div ref={containerRef}>
-            {feedbacks.map((testimonial, index) => (
-                <motion.div
-                    key={testimonial.id}
-                    style={{
-                        scale: useTransform(
-                            scrollYProgress,
-                            [index / feedbacks.length, (index + 0.2) / feedbacks.length],
-                            [0.8, 1]
-                        ),
-                    }}
-                >
-                    <TestimonialCard
-                        quote={testimonial.feedback}
-                        author={testimonial.logoName}
-                        company={testimonial.company}
-                        image={testimonial.logo}
-                    />
-                </motion.div>
-            ))}
-        </div>
+        {/* Testimonial card */}
+        {
+            feedbacks.map((testimonial, index) => (
+              <TestimonialCard
+                key={testimonial.id}
+                quote={testimonial.feedback}
+                author={testimonial.logoName}
+                company={testimonial.company}
+                image={testimonial.logo}
+                
+              />
+            ))
+        }
 
         {/* Progress bar */}
         <div className="max-w-md mx-auto">

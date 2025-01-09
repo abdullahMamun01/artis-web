@@ -1,5 +1,7 @@
 'use client'
+import { useWorkStore } from '@/stores/work.sotre';
 import { Edit, Trash2 } from 'lucide-react'
+import DeleteButton from '../DeleteButton';
 
 
 /**
@@ -15,7 +17,14 @@ import { Edit, Trash2 } from 'lucide-react'
  * @param {{workItems: WorkItem[], onDelete: (id: number) => void}} props
  */
 
-export default function WorkTable({ workItems, onDelete }) {
+export default function WorkTable({ workItems, onDelete , open}) {
+  const {setEditedItem, editedItem} = useWorkStore();
+  const handleEdit = (item) => {
+    setEditedItem(item);
+    open();
+    console.log(editedItem)
+  }
+  
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full bg-white border border-gray-200">
@@ -35,17 +44,17 @@ export default function WorkTable({ workItems, onDelete }) {
               </td>
               <td className="px-6 py-4 whitespace-nowrap">{item.title}</td>
               <td className="px-6 py-4 whitespace-nowrap">
-                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                  {item.tag}
-                </span>
+                {item.tags.map((tag) => (
+                  <span key={tag} className="px-2 inline-flex text-xs ml-2 leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                    {tag}
+                  </span>
+                ))}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <button className="text-indigo-600 hover:text-indigo-900 mr-4">
+                <button onClick={() => handleEdit(item)} className="text-indigo-600 hover:text-indigo-900 mr-4">
                   <Edit className="w-5 h-5" />
                 </button>
-                <button onClick={() => onDelete(item.id)} className="text-red-600 hover:text-red-900">
-                  <Trash2 className="w-5 h-5" />
-                </button>
+               <DeleteButton id={item.id} section="work"/>
               </td>
             </tr>
           ))}

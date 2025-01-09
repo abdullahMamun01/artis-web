@@ -1,14 +1,14 @@
 'use client'
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 const DashboardSidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const router = useRouter();
-
+  const pathName = usePathname()
   const navItems = [
-    { name: 'Hero', path: '/dashboard/hero' },
+    { name: 'Hero', path: '/dashboard' },
     { name: 'Work', path: '/dashboard/work' },
     { name: 'Feedback', path: '/dashboard/feedback' },
   ];
@@ -41,7 +41,7 @@ const DashboardSidebar = () => {
             {navItems.map((item) => (
               <li key={item.name}>
                 <Link href={item.path} className={`flex items-center px-6 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 ${
-                    router.pathname === item.path ? 'bg-gray-100 text-gray-900 font-medium' : ''
+                    pathName === item.path ? 'bg-sky-100 text-gray-900 font-medium' : ''
                   }`}>
                     <span className={`${router.pathname === item.path ? 'bg-gray-200' : ''}`}>{item.name}</span>
                 </Link>

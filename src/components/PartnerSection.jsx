@@ -1,6 +1,11 @@
+"use client";
 import React from "react";
+import { motion, useInView } from "framer-motion";
 
 export default function PartnerSection() {
+  const ref = React.useRef(null);
+  const isInView = useInView(ref, { once: true });
+
   return (
     <div className="min-h-screen bg-white  py-32 ">
       <div className="mx-auto w-full px-20 h-4/5">
@@ -8,20 +13,67 @@ export default function PartnerSection() {
           {/* Left Column */}
           <div className="space-y-12 col-span-6">
             <div className="space-y-8">
-              <h1 className="text-[54px] font-semibold tracking-tight text-gray-900 ">
-                Your Digital Partner
-              </h1>
-              <p className="max-w-xl font-medium text-[24px] text-[#111111]">
-                We partner with companies of all sizes to solve complex business
-                challenges and define their digital strategies and objectives
-                that deliver results. We help bring ideas to life and create
-                brands, websites & digital products that work.
-              </p>
+              <motion.h1 
+                className="text-[54px] font-semibold tracking-tight text-gray-900"
+              >
+                {["Your", "Digital", "Partner"].map((word, i) => (
+                  <motion.span
+                    key={i}
+                    className="inline-block mr-[1.1rem]"
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: 0.6,
+                      type: "spring",
+                      damping: 25,
+                      stiffness: 100,
+                      delay: i * 0.1 // Stagger each word
+                    }}
+                  >
+                    {word}
+                  </motion.span>
+                ))}
+              </motion.h1>
+              <motion.p 
+                ref={ref}
+                className="max-w-xl font-medium text-[24px] text-[#111111] "
+                initial={{ opacity: 0 }}
+                animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+                transition={{ duration: 0.8 }}
+              >
+                {["We partner with companies of all sizes to solve complex business challenges",
+                  "and define their digital strategies and objectives that deliver results.",
+                  "We help bring ideas to life and create brands, websites & digital products that work."].map((line, i) => (
+                  <motion.span
+                    key={i}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+                    transition={{
+                      duration: 0.8,
+                      ease: "easeOut",
+                      delay: i * 0.12
+                    }}
+                  >
+                    {line}
+                  </motion.span>
+                ))}
+              </motion.p>
             </div>
 
             {/* Brands Section */}
             <div className="space-y-3 flex gap-4 pt-20">
-              <div className="flex -space-x-4">
+              <motion.div 
+                className="flex -space-x-4"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.6,
+                  type: "spring",
+                  damping: 25,
+                  stiffness: 100,
+                  delay: 0.2
+                }}
+              >
                 <div className="relative h-16 w-16 overflow-hidden rounded-full border-4 border-white bg-gray-900">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 44">
                     <path
@@ -49,31 +101,62 @@ export default function PartnerSection() {
                     ></path>
                   </svg>
                 </div>
-              </div>
-              <p className=" text-gray-500 text-[24px]">
+              </motion.div>
+              <motion.p 
+                className="text-gray-500 text-[24px]"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.7,
+                  type: "spring",
+                  damping: 25,
+                  stiffness: 100,
+                  delay: 0.4
+                }}
+              >
                 Brands who&apos;ve trusted us...
-              </p>
+              </motion.p>
             </div>
           </div>
 
           {/* Right Column - Stats */}
-          <div className="flex items-end col-span-6 h-full justify-end ">
-            <div className="w-full rounded-3xl bg-[#ECF1F4] px-[80px] py-20 border-l border-r border-gray-350 ">
-              <div className="grid sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-gray-300 ">
-                <div className="text-center pb-8 sm:pb-0 sm:pr-8">
+          <div className="flex items-end col-span-6 h-full justify-end">
+            <motion.div 
+              className="w-full rounded-3xl bg-[#ECF1F4] px-[80px] py-20 border-l border-r border-gray-350 origin-top"
+              initial={{ opacity: 0, scaleY: 0 }}
+              animate={{ opacity: 1, scaleY: 1 }}
+              transition={{
+                duration: 0.8,
+                type: "spring",
+                damping: 25,
+                stiffness: 100,
+              }}
+            >
+              <div className="grid sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-gray-300">
+                <motion.div 
+                  className="text-center pb-8 sm:pb-0 sm:pr-8"
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6, duration: 0.5 }}
+                >
                   <div className="text-[54px] font-bold mb-2">20</div>
                   <div className="text-[24px] text-muted-foreground">
                     Years on the market
                   </div>
-                </div>
-                <div className="text-center pt-8 sm:pt-0 sm:pl-8">
+                </motion.div>
+                <motion.div 
+                  className="text-center pt-8 sm:pt-0 sm:pl-8"
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8, duration: 0.5 }}
+                >
                   <div className="text-[54px] font-bold mb-2">500</div>
                   <div className="text-[24px] text-muted-foreground">
                     Satisfied Customers
                   </div>
-                </div>
+                </motion.div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

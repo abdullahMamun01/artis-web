@@ -45,30 +45,41 @@ const containerVariants = {
     }
   }
 }
-const logoVariants = {
-  hidden: { 
+
+const textVariants = {
+  hidden: {
     opacity: 0,
-    y: 20,
+    y: 20
   },
   visible: {
     opacity: 1,
-    y: 0,
-    transition: {
-      duration: 1.5,
-      repeat: Infinity,
-      repeatType: "reverse",
-      repeatDelay: 2
-    }
+    y: 0
   }
-}
+};
 
 export default function BusinessPartners() {
+  const text = "From ambitious startups to global companies, we partner with great businesses and industry leaders.";
+  const words = text.split(" ");
+  
   return (
     <div className="space-y-8 px-20">
-      <h2 className="text-[54px] font-semibold max-w-7xl px-4">
-        From ambitious startups to global companies, we partner with great
-        businesses and <br /> industry leaders.
-      </h2>
+      <motion.h2 className="text-[54px] font-semibold max-w-7xl px-4 flex flex-wrap gap-x-4">
+        {words.map((word, i) => (
+          <motion.span
+            key={i}
+            variants={textVariants}
+            initial="hidden"
+            animate="visible"
+            transition={{
+              duration: 0.5,
+              delay: i * 0.1,
+              ease: "easeOut"
+            }}
+          >
+            {word}
+          </motion.span>
+        ))}
+      </motion.h2>
 
       
       <motion.div 

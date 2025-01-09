@@ -3,6 +3,9 @@
 import { X } from "lucide-react";
 import { motion } from "framer-motion";
 import { Modal } from "./Modal";
+import NavItem from "./NavItem";
+import SlideUpFadeText from "./SlideUpFadeText";
+import { useState } from "react";
 
 const container = {
   hidden: { opacity: 0 },
@@ -26,8 +29,9 @@ const item = {
  */
 
 export default function MenuItem({ isOpen, onClose }) {
+  const  [isHovered, setIsHovered] = useState(false);
   const menuItems = [
-    { title: "Case Studies", number: "13" },
+    { title: "Case Studies", count: "13" },
     { title: "Our Agency" },
     { title: "Contact Us" },
     { title: "News" },
@@ -62,11 +66,12 @@ export default function MenuItem({ isOpen, onClose }) {
                 key={menuItem.title}
                 href="#"
                 variants={item}
-                className="flex items-center justify-between text-[54px] leading-none font-medium hover:text-indigo-400 transition-colors"
+                className="flex items-center  text-[54px] leading-none font-medium hover:text-indigo-400 transition-colors"
               >
-                <span>{menuItem.title}</span>
+                {/* <span>{menuItem.title}</span> */}
+                <NavItem text={menuItem.title} />
                 {menuItem.count && (
-                  <span className="ml-4 text-2xl text-indigo-400">
+                  <span className="ml-4 text-[23px] font-semibold text-white bg-transparent border border-gray-700 backdrop-blur-sm rounded-full p-5">
                     {menuItem.count}
                   </span>
                 )}
@@ -101,9 +106,12 @@ export default function MenuItem({ isOpen, onClose }) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.3 }}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
                 className="rounded-full bg-[#4F5CD7] hover:bg-[#4F5CD7]/90 text-white text-lg px-8 py-4"
               >
-                Get in touch
+                <SlideUpFadeText isHovered={isHovered} text="Get in touch" />
+            
               </motion.button>
             </div>
           </motion.div>

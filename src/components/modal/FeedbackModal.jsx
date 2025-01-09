@@ -22,6 +22,49 @@ import { useFeedbackStore } from "@/stores/feedback.stores";
  * @returns {JSX.Element|null} The rendered component or null if not open.
  */
 
+const handleFeedback = async ({ id, data, method, setIsLoading, reset }) => {
+  setIsLoading(true);
+  try {
+    const formData = new FormData();
+    formData.append("logoName", data.logoName);
+    formData.append("companyName", data.companyName);
+    formData.append("feedback", data.feedback);
+    if (data.image) {
+      formData.append("image", data.image);
+    }
+
+    const url = id
+      ? `${process.env.NEXT_PUBLIC_API_BASE_URL}/feedbacks/${id}` // PATCH
+      : `${process.env.NEXT_PUBLIC_API_BASE_URL}/feedbacks`; // POST
+
+    const response = await fetch(url, {
+      method: method || (id ? "PATCH" : "POST"),
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to ${method === "POST" ? "add" : "update"} feedback`);
+    }
+
+    const result = await response.json();
+    toast.success(
+      `Feedback ${method === "POST" ? "added" : "updated"} successfully`,
+      { position: "top-right" }
+    );
+
+    if (reset) reset(); // Reset only if provided
+  } catch (error) {
+    console.error(`Error ${method === "POST" ? "adding" : "updating"} feedback:`, error);
+    toast.error(`Error ${method === "POST" ? "adding" : "updating"} feedback`, {
+      position: "top-right",
+    });
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+
+
 const feedbackSchema = z.object({
   logoName: z.string().min(1, "Logo Name is required"),
   companyName: z.string().min(1, "Company Name is required"),
@@ -35,12 +78,11 @@ export default function FeedbackModal({ isOpen, onClose, onAdd }) {
   const { editedItem, setEditedItem } = useFeedbackStore();
 
   const formMethods = useForm({
-    // resolver: zodResolver(feedbackSchema),
+    resolver: editedItem ? undefined : zodResolver(feedbackSchema),
     defaultValues: {
       logoName: editedItem ? editedItem.logoName || "" : "",
       companyName: editedItem ? editedItem.companyName || "" : "",
       feedback: editedItem ? editedItem.feedback || "" : "",
-      image: editedItem ? editedItem.image || null : null,
     },
   });
 
@@ -52,39 +94,27 @@ export default function FeedbackModal({ isOpen, onClose, onAdd }) {
   } = formMethods;
 
   const [isLoading, setIsLoading] = useState(false);
-  console.log(editedItem, "from modal");
+
   const onSubmit = async (data) => {
     setIsLoading(true);
-    try {
-      const formData = new FormData();
-      formData.append("logoName", data.logoName);
-      formData.append("companyName", data.companyName);
-      formData.append("feedback", data.feedback);
-      formData.append("image", data.image);
-
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/feedbacks`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to add feedback");
-      }
-
-      const result = await response.json();
-      toast.success("Feedback added successfully", { position: "top-right" });
-
-      onAdd(result);
-      reset();
-    } catch (error) {
-      console.error("Error adding feedback:", error);
-      // Add error handling UI if needed
-    } finally {
-      setIsLoading(false);
+    if(editedItem){
+      await handleFeedback({
+        id: editedItem.id,
+        data,
+        method: "PATCH",
+        setIsLoading,
+        reset,
+      });
+      onclose()
+    }else{
+      await handleFeedback({
+        data,
+        setIsLoading,
+        reset,
+      });
+      onClose()
     }
+     
   };
 
   useEffect(() => {
@@ -139,7 +169,7 @@ export default function FeedbackModal({ isOpen, onClose, onAdd }) {
               >
                 Upload Logo
               </label>
-              <ImageUpload name="image" />
+              <ImageUpload name="image" imageUrl={editedItem?.logo || null}/>
               {errors.image && (
                 <p className="mt-1 text-sm text-red-600">
                   {errors.image.message}
@@ -208,7 +238,7 @@ export default function FeedbackModal({ isOpen, onClose, onAdd }) {
                 type="submit"
                 className="w-full px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
               >
-                {isLoading ? "Adding..." : "Add Feedback"}
+                {isLoading ? "Adding..." : editedItem ? "Update" : "Add"}
               </button>
             </div>
           </form>

@@ -2,6 +2,7 @@
 import { useFeedbackStore } from '@/stores/feedback.stores'
 import { useModalStore } from '@/stores/modal.store';
 import { Edit, Trash2 } from 'lucide-react'
+import DeleteButton from '../DeleteButton';
 /**
  * A table component for displaying feedback items.
  * @param {FeedbackItem[]} feedbackItems - An array of feedback items
@@ -45,9 +46,7 @@ export default function FeedbackTable({ feedbackItems, onDelete }) {
                 <button onClick={() => handleEdit(item)} className="text-indigo-600 hover:text-indigo-900 mr-4">
                   <Edit className="w-5 h-5" />
                 </button>
-                <button onClick={() => onDelete(item.id)} className="text-red-600 hover:text-red-900">
-                  <Trash2 className="w-5 h-5" />
-                </button>
+                <DeleteButton id={item.id} section="feedback" />  
               </td>
             </tr>
           ))}

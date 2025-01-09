@@ -1,7 +1,11 @@
+"use client";
 import { Facebook, Instagram, Twitter } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import SlideUpFadeText from "./SlideUpFadeText";
 
 export default function Footer() {
+  const [isHovered, setIsHovered] = useState(false);
   return (
     <footer className="bg-background">
       <div className="w-full mx-auto px-4 py-24 sm:px-6 lg:px-20">
@@ -16,8 +20,12 @@ export default function Footer() {
             <div className="space-y-6">
               <div className="space-y-1">
                 <div className="text-md mb-4 font-medium">Get in touch</div>
-                <p className="text-[23px] font-semibold text-gray-800">+44 207 112 82 85</p>
-                <p className="text-[23px] font-semibold text-gray-800">contact@artistsweb.com</p>
+                <p className="text-[23px] font-semibold text-gray-800">
+                  +44 207 112 82 85
+                </p>
+                <p className="text-[23px] font-semibold text-gray-800">
+                  contact@artistsweb.com
+                </p>
               </div>
               <p className="text-[23px] font-semibold text-gray-800">
                 Artistsweb, 18 Soho Square, London, W1D 3QL, United Kingdom
@@ -38,12 +46,18 @@ export default function Footer() {
             </div>
 
             <div className="bg-[#ECF1F4] rounded-3xl p-8 space-y-4 px-12 py-10 overflow-hidden">
-              <h3 className="text-[39px] font-[500] text-center">Let&apos;s get started</h3>
+              <h3 className="text-[39px] font-[500] text-center">
+                Let&apos;s get started
+              </h3>
               <p className=" text-center pb-7">
                 We&apos;d love to hear about your project.
               </p>
-              <button className="w-full text-[54px]  bg-[#6366F1] hover:bg-[#5558DA] text-white py-5 text-lg rounded-full">
-                Get in touch
+              <button
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                className="w-full text-[54px]  bg-[#6366F1] hover:bg-[#5558DA] text-white py-5 text-lg rounded-full"
+              >
+                <SlideUpFadeText isHovered={isHovered} text="Get in touch" />
               </button>
             </div>
           </div>
@@ -69,8 +83,6 @@ export default function Footer() {
             </Link>
           </div>
         </div>
-
-        
       </div>
     </footer>
   );

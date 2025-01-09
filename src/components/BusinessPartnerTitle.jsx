@@ -20,7 +20,7 @@ export function BusinessPartnerTitle() {
         <motion.div
           ref={cardsContainerRef}
           style={{ x }}
-          className="flex gap-8 pl-[35vw] relative pr-20 min-w-max text-[130px] font-bold"
+          className="flex gap-8 pl-[35vw] relative pr-20 min-w-max text-[140px] font-bold"
         >
           Elevate your digital presence
         </motion.div>

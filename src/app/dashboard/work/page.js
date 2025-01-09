@@ -1,20 +1,35 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Plus } from 'lucide-react'
 import WorkTable from '@/components/table/WorkTable'
 import AddWorkModal from '@/components/modal/WorkModal'
+import TableSkeleton from '@/components/skeleton/TableSkeleton'
+import { useModalStore } from '@/stores/modal.store'
 
 
 
 export default function WorkPage() {
+  const { open , isOpen , close} = useModalStore()
+  const [isLoading, setIsLoading] = useState(true)
+  const [workItems, setWorkItems] = useState([])
+
+  const fetchWorks = async () => {
+    setIsLoading(true)
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/works`)
+    const data = await response.json()
+    setWorkItems(data.data || [])
+    setIsLoading(false)
+    console.log(data)
+  }
+
+  useEffect(() => {
+    fetchWorks()
+  }, [])
+
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [workItems, setWorkItems] = useState([
-    { id: 1, image: '/placeholder.svg?height=50&width=50', title: 'Project A', tag: 'Web Design' },
-    { id: 2, image: '/placeholder.svg?height=50&width=50', title: 'Project B', tag: 'Mobile App' },
-    { id: 3, image: '/placeholder.svg?height=50&width=50', title: 'Project C', tag: 'Branding' },
-  ])
+
 
   const addWorkItem = (newItem) => {
     setWorkItems([...workItems, { ...newItem, id: workItems.length + 1 }])
@@ -30,15 +45,20 @@ export default function WorkPage() {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold text-gray-900">Work</h1>
         <button
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => open()}
           className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 flex items-center"
         >
           <Plus className="w-5 h-5 mr-2" />
           Add Work
         </button>
       </div>
-      <WorkTable workItems={workItems} onDelete={deleteWorkItem} />
-      <AddWorkModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onAdd={addWorkItem} />
+      {
+        isLoading ?
+          <TableSkeleton /> :
+          <WorkTable workItems={workItems} open={open} onDelete={deleteWorkItem} />
+
+      }
+      <AddWorkModal isOpen={isOpen} onClose={close} onAdd={addWorkItem} />
     </div>
   )
 }

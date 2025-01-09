@@ -1,21 +1,36 @@
 "use client";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 const SlideUpFadeText = ({ text, isHovered, className }) => {
+  const springConfig = {
+    type: "spring",
+    bounce: 0.4,
+    stiffness: 150,
+    damping: 12,
+    duration: isHovered ? 0.6 : 0,
+    mass: 0.8
+  };
+
   return (
-    <div className={`relative overflow-hidden ${className}`}>
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={isHovered ? "hover" : "default"}
-          initial={{ y: isHovered ? 20 : -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: isHovered ? -20 : 20, opacity: 0 }}
-          transition={{ duration: 0.3, ease: "easeInOut" }}
-          className="whitespace-nowrap"
-        >
-          {text}
-        </motion.div>
-      </AnimatePresence>
+    <div className={`relative overflow-hidden flex items-center justify-center ${className}`}>
+      <motion.div
+        animate={{
+          y: isHovered ? "-100%" : 0,
+          transition: springConfig
+        }}
+        className="whitespace-nowrap text-center"
+      >
+        {text}
+      </motion.div>
+      <motion.div
+        animate={{
+          y: isHovered ? 0 : "100%",
+          transition: springConfig
+        }}
+        className="whitespace-nowrap absolute text-center w-full"
+      >
+        {text}
+      </motion.div>
     </div>
   );
 };

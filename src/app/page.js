@@ -9,29 +9,37 @@ import ServicesSection from "@/components/ServiceSection";
 import SmoothScroll from "@/components/SmoothScroll";
 import TeamSection from "@/components/TeamSection";
 import { WorkSection } from "@/components/WorkSection";
+import fetchFeedback from "@/services/feedback.service";
+import fetchWorks from "@/services/work.service";
 
 
 
 import Image from "next/image";
+import { Suspense } from "react";
 
-export default function Home() {
+export default async function Home() {
+  const works = await fetchWorks();
+  const feedbacks = await fetchFeedback();
+
   return (
     <div>
       <SmoothScroll>
-
-      <HeroSection />
-      <WorkSection/>
-      <TeamSection/>
-      <PartnerSection/>
-      <Banner/>
-      <BusinessPartners/>
-      <DigitalGoalsSection/>
-      <ServicesSection/>
-
-      <Feedback/>
-      <Footer/>
-
+        <HeroSection />
+        <Suspense fallback={<div>Loading...</div>}>
+          <WorkSection works={works} />
+        </Suspense>
+        <TeamSection />
+        <PartnerSection />
+        <Banner />
+        <BusinessPartners />
+        <DigitalGoalsSection />
+        <ServicesSection />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Feedback feedbacks={feedbacks} />
+        </Suspense>
+        <Footer />
       </SmoothScroll>
+
     </div>
   );
 }

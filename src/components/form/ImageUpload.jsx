@@ -5,12 +5,13 @@ import { Upload, X } from 'lucide-react'
 import Image from 'next/image'
 import { useFormContext } from 'react-hook-form'
 
-export default function ImageUpload({ name = 'image', onChange }) {
+export default function ImageUpload({ name = 'image', onChange ,imageUrl=null}) {
   const formContext = useFormContext()
   const { setValue, watch } = formContext || {}
-  const [image, setImage] = useState(null)
+  const [image, setImage] = useState(imageUrl || null)
   const fileInputRef = useRef(null)
   const watchedImage = formContext ? watch?.(name) : null
+
 
   const handleFileSelect = (e) => {
     const file = event.target.files?.[0]
@@ -132,4 +133,5 @@ export default function ImageUpload({ name = 'image', onChange }) {
     </div>
   )
 }
+
 
